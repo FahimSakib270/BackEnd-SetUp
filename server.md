@@ -1,4 +1,4 @@
-# ☕ Coffee House Server (Express + MongoDB)
+# ☕ BackEnd Server SetUp (Express + MongoDB)
 
 This is the backend server for the Coffee House application built using **Node.js**, **Express**, and connected to **MongoDB Atlas**.
 
@@ -15,8 +15,8 @@ coffee-house-server/
 ### 1. Create Project Folder
 
 ```Cmd
-mkdir coffee-house-server
-cd coffee-house-server
+mkdir project-name
+cd project-name
 npm init -y
 npm install express cors dotenv mongodb
 ```
