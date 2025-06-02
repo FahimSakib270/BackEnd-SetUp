@@ -199,3 +199,31 @@ Add a onClick handler on the button -
   };
     }
 ```
+
+### Find Single Data from DB using id
+
+```
+// sending a single data from server
+    app.get("/coffees/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const find = await coffeesCollections2.findOne(query);
+      res.send(find);
+    });
+
+//Frontend
+On ViewDetailsButton --->
+<Link to={`/details/${_id}`} className="btn btn-primary btn-xs">View</Link>
+
+     {
+        path: "/details/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/coffees/${params.id}`),
+        Component: ViewCoffeeDetails,
+      },
+      in View Details Card
+      const ViewCoffeeDetails = () => {
+       const data = useLoaderData();
+         return ( )
+         }
+```
