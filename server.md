@@ -103,3 +103,40 @@ Replace **your_mongodb_username** and **your_mongodb_password** with your actual
 ## 6. Run The Server
 
 In terminal **nodemon index.js** run this command to start the project
+
+### CRUD - POST Operation (MongoDB + Express)
+
+```
+const coffeesCollections2 = client.db("coffeeDB2").collection("coffees"); //creating bd and collections
+// POST route
+//backend
+    app.post("/coffees", async (req, res) => {
+      const coffeeData = req.body;
+      const result = await client.db("coffeeDB").collection("coffees").insertOne(coffeeData);
+      res.send(result);
+      console.log(coffeeData);
+    });
+
+    //frontend
+    fetch("http://localhost:3000/coffees", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(coffeeData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            position: "top",
+            icon: "success",
+            title: "Coffee Added Successfully",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
+        console.log("coffee after db ", data);
+      });
+
+```
