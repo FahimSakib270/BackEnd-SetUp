@@ -227,3 +227,69 @@ On ViewDetailsButton --->
          return ( )
          }
 ```
+
+### app.put - update data using put
+
+```
+**backend**
+//updating doc
+    app.put("/coffees/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updatedCoffee = req.body;
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: updatedCoffee,
+      };
+      const results = await coffeesCollections2.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(results);
+    });
+    **Frontend**
+
+    Path in router -
+    {
+        path: "/updateCoffee/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/coffees/${params.id}`),
+        Component: UpdateCoffee,
+      }
+  **onClick on button**
+  <Link to={`/updateCoffee/${_id}`} className="btn btn-warning btn-xs">Update</Link>
+
+const UpdateCoffee = () => {
+  const data = useLoaderData();
+  console.log(data);
+  const { _id } = data;
+  const handleUpdateCoffee = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const updatedCoffeeData = Object.fromEntries(new FormData(form));
+
+    //sending data to the server
+    fetch(`http://localhost:3000/coffees/${_id}`, {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(updatedCoffeeData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount) {
+          Swal.fire({
+            position: "top",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+  };
+  retutn (
+    <!-- form -->
+  )
+}
+```
