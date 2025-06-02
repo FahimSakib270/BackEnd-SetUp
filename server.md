@@ -140,3 +140,62 @@ const coffeesCollections2 = client.db("coffeeDB2").collection("coffees"); //crea
       });
 
 ```
+
+### sending data from dataBase to backend-server using get()
+
+```
+// sending data from dataBase to backend-server
+    app.get("/coffees", async (req, res) => {
+      const cursor = await coffeesCollections2.find().toArray();
+      res.send(cursor);
+    });
+```
+
+### Deleting a single data from UI using delete
+
+```
+/// deleting data from ui
+    app.delete("/coffees/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const results = await coffeesCollections2.deleteOne(query);
+      res.send(results);
+    });
+
+    //frontend
+
+Add a onClick handler on the button -
+    <Link onClick={() => handleDelete(_id)}className="btn btn-error btn-xs" > Delete</Link>
+
+    const AllCoffeesCard = ({ singleCoffee }) => {
+  const { _id, name, price, photoUrl, details, taste, supplier } = singleCoffee;
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/coffees/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.deletedCount) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            }
+            console.log(data);
+          });
+      }
+    });
+  };
+    }
+```
